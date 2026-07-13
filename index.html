@@ -1,52 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sky Hopper</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sky Hopper</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+
 <div id="gameContainer">
 
+
+    <!-- 점수 -->
+
     <div id="score">
-        SCORE : <span id="scoreValue">0</span>
+        SCORE :
+        <span id="scoreValue">0</span>
     </div>
+
 
     <div id="best">
-        BEST : <span id="bestValue">0</span>
+        BEST :
+        <span id="bestValue">0</span>
     </div>
 
+
+
+    <!-- 플레이어 -->
 
     <div id="player"></div>
 
 
+
+    <!-- 시작 화면 -->
+
     <div id="startScreen">
+
         <h1>SKY HOPPER</h1>
-        <p>SPACE 또는 클릭으로 점프</p>
-        <button id="startButton">START</button>
-    </div>
 
-
-    <div id="gameOverScreen">
-        <h1>GAME OVER</h1>
         <p>
-            SCORE :
-            <span id="finalScore">0</span>
+            클릭 또는 SPACE로 점프
         </p>
 
-        <button id="restartButton">
-            RESTART
+
+        <button id="startButton">
+            START
         </button>
+
     </div>
+
+
+
+
+    <!-- 게임 오버 화면 -->
+
+    <div id="gameOverScreen">
+
+
+        <h1>
+            GAME OVER
+        </h1>
+
+
+        <p>
+            SCORE :
+            <span id="finalScore">
+            0
+            </span>
+        </p>
+
+
+
+        <button id="restartButton">
+
+            RESTART
+
+        </button>
+
+
+    </div>
+
 
 
 </div>
 
 
-<script src="game.js"></script>
+
+<script src="./game.js"></script>
+
 
 </body>
+
 </html>
