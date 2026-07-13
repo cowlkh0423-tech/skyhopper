@@ -1,156 +1,153 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-// ======================
-// 설정
-// ======================
-const WIDTH = canvas.width;
-const HEIGHT = canvas.height;
 
-const gravity = 0.5;
-const jumpPower = -9;
+body {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
 
-let gameStarted = false;
-let gameOver = false;
 
-// ======================
-// 새
-// ======================
-const bird = {
-    x:150,
-    y:300,
-    width:35,
-    height:35,
-    velocity:0
-};
+#gameContainer {
+    width: 400px;
+    height: 700px;
+    background: linear-gradient(#56ccf2, #2f80ed);
+    position: relative;
+    overflow: hidden;
+    border: 3px solid white;
+}
 
-// ======================
-// 입력
-// ======================
-document.addEventListener("keydown",(e)=>{
 
-    if(e.code==="Space"){
+/* 점수 */
 
-        e.preventDefault();
+#score,
+#best {
+    position: absolute;
+    top: 15px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    z-index: 10;
+}
 
-        if(!gameStarted){
-            gameStarted=true;
-        }
 
-        if(!gameOver){
-            bird.velocity=jumpPower;
-        }
-    }
+#score {
+    left: 15px;
+}
 
-    if(e.code==="KeyR" && gameOver){
-        restartGame();
-    }
 
-});
+#best {
+    right: 15px;
+}
 
-// ======================
-// 재시작
-// ======================
-function restartGame(){
 
-    bird.y=300;
-    bird.velocity=0;
 
-    gameStarted=false;
-    gameOver=false;
+/* 플레이어 */
+
+#player {
+
+    width: 40px;
+    height: 40px;
+
+    background: yellow;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    left: 80px;
+    top: 300px;
 
 }
 
-// ======================
-// 업데이트
-// ======================
-function update(){
 
-    if(!gameStarted) return;
-    if(gameOver) return;
 
-    bird.velocity+=gravity;
-    bird.y+=bird.velocity;
+/* 장애물 */
 
-    // 바닥 충돌
-    if(bird.y+bird.height>=HEIGHT){
+.obstacle {
 
-        bird.y=HEIGHT-bird.height;
-        gameOver=true;
+    width: 70px;
 
-    }
+    background: green;
 
-    // 천장 충돌
-    if(bird.y<=0){
+    position: absolute;
 
-        bird.y=0;
-        bird.velocity=0;
-
-    }
+    right: -80px;
 
 }
 
-// ======================
-// 그리기
-// ======================
-function draw(){
 
-    ctx.clearRect(0,0,WIDTH,HEIGHT);
 
-    // 하늘
-    ctx.fillStyle="#87CEEB";
-    ctx.fillRect(0,0,WIDTH,HEIGHT);
+/* 시작 화면 */
 
-    // 바닥
-    ctx.fillStyle="#2ecc71";
-    ctx.fillRect(0,560,900,40);
+#startScreen,
+#gameOverScreen {
 
-    // 새
-    ctx.fillStyle="yellow";
-    ctx.beginPath();
-    ctx.arc(
-        bird.x+bird.width/2,
-        bird.y+bird.height/2,
-        bird.width/2,
-        0,
-        Math.PI*2
-    );
-    ctx.fill();
+    position: absolute;
 
-    ctx.fillStyle="black";
-    ctx.font="28px Arial";
+    width: 100%;
+    height: 100%;
 
-    if(!gameStarted){
+    background: rgba(0,0,0,0.5);
 
-        ctx.fillText("SKY HOPPER",300,180);
-        ctx.fillText("Press SPACE",300,230);
+    color:white;
 
-    }
+    display:flex;
 
-    if(gameOver){
+    flex-direction:column;
 
-        ctx.fillStyle="red";
-        ctx.font="50px Arial";
-        ctx.fillText("GAME OVER",250,220);
+    justify-content:center;
 
-        ctx.fillStyle="black";
-        ctx.font="30px Arial";
-        ctx.fillText("Press R to Restart",250,280);
+    align-items:center;
 
-    }
+    gap:20px;
+
+    z-index:20;
 
 }
 
-// ======================
-// 게임 루프
-// ======================
-function gameLoop(){
 
-    update();
-    draw();
+#gameOverScreen {
 
-    requestAnimationFrame(gameLoop);
+    display:none;
 
 }
 
-gameLoop();
+
+
+h1 {
+
+    font-size:45px;
+
+}
+
+
+
+button {
+
+    padding:15px 35px;
+
+    font-size:20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+
+button:hover {
+
+    transform:scale(1.1);
+
+}
