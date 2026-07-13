@@ -489,22 +489,22 @@ let gap;
 
 if(level===1)
 
-gap=190;
+gap=180;
 
 
 else if(level===2)
 
-gap=160;
+gap=150;
 
 
 else if(level===3)
 
-gap=130;
+gap=120;
 
 
 else
 
-gap=110;
+gap=100;
 
 
 
