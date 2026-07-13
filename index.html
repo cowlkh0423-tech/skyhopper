@@ -17,39 +17,70 @@
 <body>
 
 
-<div id="gameContainer">
+<div id="game">
 
 
-    <!-- 점수 -->
+    <!-- UI -->
 
-    <div id="scoreBox">
+    <div id="ui">
 
-        SCORE :
-        <span id="score">0</span>
+
+        <div>
+            SCORE :
+            <span id="score">0</span>
+        </div>
+
+
+        <div>
+            BEST :
+            <span id="best">0</span>
+        </div>
+
+
+        <div>
+            LEVEL :
+            <span id="level">1</span>
+        </div>
+
 
     </div>
 
 
-    <div id="bestBox">
 
-        BEST :
-        <span id="best">0</span>
+
+
+    <!-- 바람 경고 -->
+
+
+    <div id="windWarning">
+
+        HEAD WIND
 
     </div>
 
 
 
 
-    <!-- 새 캐릭터 -->
+
+
+
+    <!-- 새 -->
+
 
     <div id="bird">
 
 
-        <div id="birdBody"></div>
+        <div id="body"></div>
+
 
         <div id="eye"></div>
 
+
+        <div id="shine"></div>
+
+
         <div id="beak"></div>
+
 
         <div id="wing"></div>
 
@@ -60,7 +91,10 @@
 
 
 
-    <!-- 장애물 생성 영역 -->
+
+
+    <!-- 장애물은 JS에서 생성 -->
+
 
 
 
@@ -79,12 +113,14 @@
 
 
         <p>
-            SPACE 또는 클릭으로 점프
+            CLICK / SPACE TO FLY
         </p>
 
 
         <button id="startButton">
+
             START
+
         </button>
 
 
@@ -116,7 +152,6 @@
         </p>
 
 
-
         <button id="restartButton">
 
             RESTART
@@ -128,8 +163,8 @@
 
 
 
-
 </div>
+
 
 
 
