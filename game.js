@@ -108,7 +108,7 @@ function jump(){
 if(!playing)return;
 
 
-velocity=jumpPower*(wind?0.6:1);
+velocity=jumpPower;
 
 
 
