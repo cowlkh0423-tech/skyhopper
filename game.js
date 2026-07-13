@@ -367,3 +367,4 @@ function endGame(){
 
 
 };
+alert("game.js 실행됨");
