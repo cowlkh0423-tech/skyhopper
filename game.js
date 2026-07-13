@@ -1,49 +1,39 @@
-// Sky Hopper 안정화 버전
-
 window.onload = function(){
 
-const player = document.getElementById("player");
-const gameContainer = document.getElementById("gameContainer");
+const game = document.getElementById("game");
 
-const scoreText = document.getElementById("scoreValue");
-const bestText = document.getElementById("bestValue");
+const bird = document.getElementById("bird");
 
 const startScreen = document.getElementById("startScreen");
-const gameOverScreen = document.getElementById("gameOverScreen");
+const overScreen = document.getElementById("overScreen");
 
-const startButton = document.getElementById("startButton");
-const restartButton = document.getElementById("restartButton");
+const startBtn = document.getElementById("startBtn");
+const restartBtn = document.getElementById("restartBtn");
 
-const finalScore = document.getElementById("finalScore");
-
-
-// 요소 확인
-if(!player || !gameContainer){
-    alert("게임 요소를 찾을 수 없습니다.");
-    return;
-}
+const scoreText = document.getElementById("score");
+const bestText = document.getElementById("best");
+const resultText = document.getElementById("result");
 
 
-
-let playerY = 300;
+let birdY = 300;
 let velocity = 0;
 
-let gravity = 0.5;
-let jumpPower = -9;
+const gravity = 0.5;
+const jumpPower = -9;
 
-let running = false;
+
+let playing = false;
 
 let score = 0;
 
-let bestScore = Number(localStorage.getItem("skyBest")) || 0;
+let best = Number(localStorage.getItem("skyBest")) || 0;
 
-let obstacles = [];
+let pipes = [];
 
 let speed = 3;
 
 
-
-bestText.innerText = bestScore;
+bestText.innerText = best;
 
 
 
@@ -51,7 +41,7 @@ bestText.innerText = bestScore;
 
 function jump(){
 
-    if(running){
+    if(playing){
 
         velocity = jumpPower;
 
@@ -61,11 +51,13 @@ function jump(){
 
 
 
-// 키 입력
+// 키보드
 
-document.addEventListener("keydown",function(e){
+document.addEventListener(
+"keydown",
+function(e){
 
-    if(e.code==="Space"){
+    if(e.code === "Space"){
 
         jump();
 
@@ -74,97 +66,112 @@ document.addEventListener("keydown",function(e){
 });
 
 
-// 화면 클릭
+// 터치
 
-gameContainer.addEventListener("click",jump);
+game.addEventListener(
+"click",
+function(){
+
+    jump();
+
+});
+
 
 
 
 
 // 시작 버튼
 
-startButton.addEventListener("click",function(){
+startBtn.onclick = function(){
 
     startGame();
 
-});
+};
 
 
-// 재시작 버튼
 
-restartButton.addEventListener("click",function(){
+// 재시작
+
+restartBtn.onclick = function(){
 
     startGame();
 
-});
+};
 
 
 
 
-// 게임 시작
 
 function startGame(){
 
+
     startScreen.style.display="none";
-    gameOverScreen.style.display="none";
+
+    overScreen.style.display="none";
+
+
+    pipes.forEach(function(pipe){
+
+        pipe.remove();
+
+    });
+
+
+    pipes=[];
 
 
     score=0;
 
-    scoreText.innerText=score;
+    scoreText.innerText=0;
+
+
+    birdY=300;
+
+    velocity=0;
 
 
     speed=3;
 
 
-    playerY=300;
-
-    velocity=0;
-
-
-    obstacles.forEach(function(o){
-
-        o.remove();
-
-    });
-
-
-    obstacles=[];
-
-
-    running=true;
+    playing=true;
 
 
     gameLoop();
 
 
-    createObstacleLoop();
+    pipeLoop();
+
 
 }
 
 
 
-// 게임 진행
+
+
+// 게임 반복
 
 function gameLoop(){
 
 
-    if(!running)return;
-
+    if(!playing)return;
 
 
     velocity += gravity;
 
-    playerY += velocity;
+
+    birdY += velocity;
 
 
-    player.style.top = playerY+"px";
+    bird.style.top = birdY+"px";
 
 
 
-    if(playerY < 0 || playerY > 660){
+    if(
+        birdY < 0 ||
+        birdY > 655
+    ){
 
-        endGame();
+        gameOver();
 
         return;
 
@@ -172,7 +179,7 @@ function gameLoop(){
 
 
 
-    moveObstacles();
+    movePipes();
 
 
 
@@ -182,68 +189,87 @@ function gameLoop(){
 
 
 
-// 장애물 만들기
-
-function createObstacle(){
 
 
-    if(!running)return;
+
+// 장애물 생성
+
+function createPipe(){
 
 
-    let gap = 220;
+    let gap = 200;
 
 
     let topHeight =
-        Math.floor(Math.random()*250)+50;
+    Math.random()*250+50;
 
 
     let bottomHeight =
-        700-topHeight-gap;
+    700-topHeight-gap;
 
 
 
-    let top = document.createElement("div");
 
-    top.className="obstacle";
+    let top =
+    document.createElement("div");
 
-    top.style.height=topHeight+"px";
+
+    top.className="pipe";
+
+
+    top.style.height =
+    topHeight+"px";
+
 
     top.style.top="0px";
 
 
 
-    let bottom=document.createElement("div");
 
-    bottom.className="obstacle";
+    let bottom =
+    document.createElement("div");
 
-    bottom.style.height=bottomHeight+"px";
+
+
+    bottom.className="pipe";
+
+
+    bottom.style.height =
+    bottomHeight+"px";
+
 
     bottom.style.bottom="0px";
 
 
 
-    gameContainer.appendChild(top);
+    game.appendChild(top);
 
-    gameContainer.appendChild(bottom);
+    game.appendChild(bottom);
 
 
-    obstacles.push(top);
 
-    obstacles.push(bottom);
+    pipes.push(top);
+
+    pipes.push(bottom);
+
 
 }
 
 
 
-// 장애물 반복
-
-function createObstacleLoop(){
 
 
-    if(!running)return;
+
+// 장애물 반복 생성
+
+function pipeLoop(){
 
 
-    createObstacle();
+    if(!playing)return;
+
+
+
+    createPipe();
 
 
     score++;
@@ -259,112 +285,132 @@ function createObstacleLoop(){
     }
 
 
-    setTimeout(createObstacleLoop,2000);
+
+    setTimeout(
+        pipeLoop,
+        1800
+    );
 
 }
+
+
 
 
 
 
 // 장애물 이동
 
-function moveObstacles(){
+function movePipes(){
 
 
-    obstacles.forEach(function(obstacle,index){
-
-
-        let right =
-        parseInt(obstacle.style.right || -80);
+    pipes.forEach(
+    function(pipe,index){
 
 
 
-        right += speed;
-
-
-        obstacle.style.right=right+"px";
+        let x =
+        pipe.offsetLeft;
 
 
 
-        if(right>450){
+        pipe.style.left =
+        x-speed+"px";
 
-            obstacle.remove();
 
-            obstacles.splice(index,1);
+
+        if(x < -100){
+
+            pipe.remove();
+
+            pipes.splice(index,1);
 
             return;
 
         }
 
 
-        checkCollision(obstacle);
+
+        collision(pipe);
+
 
 
     });
 
+
 }
+
+
+
 
 
 
 
 // 충돌
 
-function checkCollision(obstacle){
+function collision(pipe){
 
 
-    let p = player.getBoundingClientRect();
+    let b =
+    bird.getBoundingClientRect();
 
-    let o = obstacle.getBoundingClientRect();
+
+    let p =
+    pipe.getBoundingClientRect();
 
 
 
     if(
 
-        p.left < o.right &&
-        p.right > o.left &&
-        p.top < o.bottom &&
-        p.bottom > o.top
+    b.left < p.right &&
+    b.right > p.left &&
+    b.top < p.bottom &&
+    b.bottom > p.top
 
     ){
 
-        endGame();
+        gameOver();
 
     }
+
 
 }
 
 
 
 
-// 게임 종료
-
-function endGame(){
 
 
-    running=false;
+// 종료
+
+function gameOver(){
 
 
-    finalScore.innerText=score;
+    playing=false;
 
 
-    if(score>bestScore){
+    resultText.innerText=score;
 
-        bestScore=score;
+
+    if(score > best){
+
+        best=score;
 
         localStorage.setItem(
             "skyBest",
-            bestScore
+            best
         );
 
-        bestText.innerText=bestScore;
+
+        bestText.innerText=best;
 
     }
 
 
-    gameOverScreen.style.display="flex";
+
+    overScreen.style.display="flex";
+
 
 }
 
 
 };
-alert("game.js 실행됨");
