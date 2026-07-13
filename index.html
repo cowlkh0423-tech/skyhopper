@@ -2,6 +2,7 @@
 <html lang="ko">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -15,27 +16,38 @@
 <body>
 
 
-<div id="gameContainer">
+<div id="game">
 
 
     <!-- 점수 -->
 
-    <div id="score">
-        SCORE :
-        <span id="scoreValue">0</span>
+    <div id="ui">
+
+        <div>
+            SCORE :
+            <span id="score">0</span>
+        </div>
+
+        <div>
+            BEST :
+            <span id="best">0</span>
+        </div>
+
     </div>
 
 
-    <div id="best">
-        BEST :
-        <span id="bestValue">0</span>
+
+    <!-- 새 캐릭터 -->
+
+    <div id="bird">
+
+        <div id="wing"></div>
+
+        <div id="eye"></div>
+
+        <div id="beak"></div>
+
     </div>
-
-
-
-    <!-- 플레이어 -->
-
-    <div id="player"></div>
 
 
 
@@ -43,14 +55,16 @@
 
     <div id="startScreen">
 
-        <h1>SKY HOPPER</h1>
+        <h1>
+            SKY HOPPER
+        </h1>
 
         <p>
-            클릭 또는 SPACE로 점프
+            터치 또는 SPACE로 날아오르기
         </p>
 
 
-        <button id="startButton">
+        <button id="startBtn">
             START
         </button>
 
@@ -58,10 +72,9 @@
 
 
 
+    <!-- 게임 종료 -->
 
-    <!-- 게임 오버 화면 -->
-
-    <div id="gameOverScreen">
+    <div id="overScreen">
 
 
         <h1>
@@ -71,17 +84,14 @@
 
         <p>
             SCORE :
-            <span id="finalScore">
+            <span id="result">
             0
             </span>
         </p>
 
 
-
-        <button id="restartButton">
-
+        <button id="restartBtn">
             RESTART
-
         </button>
 
 
@@ -93,7 +103,7 @@
 
 
 
-<script src="./game.js"></script>
+<script src="game.js"></script>
 
 
 </body>
