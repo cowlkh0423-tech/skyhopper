@@ -1,153 +1,369 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+// Sky Hopper 안정화 버전
+
+window.onload = function(){
+
+const player = document.getElementById("player");
+const gameContainer = document.getElementById("gameContainer");
+
+const scoreText = document.getElementById("scoreValue");
+const bestText = document.getElementById("bestValue");
+
+const startScreen = document.getElementById("startScreen");
+const gameOverScreen = document.getElementById("gameOverScreen");
+
+const startButton = document.getElementById("startButton");
+const restartButton = document.getElementById("restartButton");
+
+const finalScore = document.getElementById("finalScore");
 
 
-body {
-    background: #111;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-}
-
-
-#gameContainer {
-    width: 400px;
-    height: 700px;
-    background: linear-gradient(#56ccf2, #2f80ed);
-    position: relative;
-    overflow: hidden;
-    border: 3px solid white;
-}
-
-
-/* 점수 */
-
-#score,
-#best {
-    position: absolute;
-    top: 15px;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    z-index: 10;
-}
-
-
-#score {
-    left: 15px;
-}
-
-
-#best {
-    right: 15px;
+// 요소 확인
+if(!player || !gameContainer){
+    alert("게임 요소를 찾을 수 없습니다.");
+    return;
 }
 
 
 
-/* 플레이어 */
+let playerY = 300;
+let velocity = 0;
 
-#player {
+let gravity = 0.5;
+let jumpPower = -9;
 
-    width: 40px;
-    height: 40px;
+let running = false;
 
-    background: yellow;
+let score = 0;
 
-    border-radius: 50%;
+let bestScore = Number(localStorage.getItem("skyBest")) || 0;
 
-    position: absolute;
+let obstacles = [];
 
-    left: 80px;
-    top: 300px;
+let speed = 3;
+
+
+
+bestText.innerText = bestScore;
+
+
+
+// 점프
+
+function jump(){
+
+    if(running){
+
+        velocity = jumpPower;
+
+    }
 
 }
 
 
 
-/* 장애물 */
+// 키 입력
 
-.obstacle {
+document.addEventListener("keydown",function(e){
 
-    width: 70px;
+    if(e.code==="Space"){
 
-    background: green;
+        jump();
 
-    position: absolute;
+    }
 
-    right: -80px;
+});
+
+
+// 화면 클릭
+
+gameContainer.addEventListener("click",jump);
+
+
+
+
+// 시작 버튼
+
+startButton.addEventListener("click",function(){
+
+    startGame();
+
+});
+
+
+// 재시작 버튼
+
+restartButton.addEventListener("click",function(){
+
+    startGame();
+
+});
+
+
+
+
+// 게임 시작
+
+function startGame(){
+
+    startScreen.style.display="none";
+    gameOverScreen.style.display="none";
+
+
+    score=0;
+
+    scoreText.innerText=score;
+
+
+    speed=3;
+
+
+    playerY=300;
+
+    velocity=0;
+
+
+    obstacles.forEach(function(o){
+
+        o.remove();
+
+    });
+
+
+    obstacles=[];
+
+
+    running=true;
+
+
+    gameLoop();
+
+
+    createObstacleLoop();
 
 }
 
 
 
-/* 시작 화면 */
+// 게임 진행
 
-#startScreen,
-#gameOverScreen {
-
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    background: rgba(0,0,0,0.5);
-
-    color:white;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:20px;
-
-    z-index:20;
-
-}
+function gameLoop(){
 
 
-#gameOverScreen {
-
-    display:none;
-
-}
+    if(!running)return;
 
 
 
-h1 {
+    velocity += gravity;
 
-    font-size:45px;
+    playerY += velocity;
+
+
+    player.style.top = playerY+"px";
+
+
+
+    if(playerY < 0 || playerY > 660){
+
+        endGame();
+
+        return;
+
+    }
+
+
+
+    moveObstacles();
+
+
+
+    requestAnimationFrame(gameLoop);
 
 }
 
 
 
-button {
+// 장애물 만들기
 
-    padding:15px 35px;
+function createObstacle(){
 
-    font-size:20px;
 
-    border:none;
+    if(!running)return;
 
-    border-radius:10px;
 
-    cursor:pointer;
+    let gap = 220;
+
+
+    let topHeight =
+        Math.floor(Math.random()*250)+50;
+
+
+    let bottomHeight =
+        700-topHeight-gap;
+
+
+
+    let top = document.createElement("div");
+
+    top.className="obstacle";
+
+    top.style.height=topHeight+"px";
+
+    top.style.top="0px";
+
+
+
+    let bottom=document.createElement("div");
+
+    bottom.className="obstacle";
+
+    bottom.style.height=bottomHeight+"px";
+
+    bottom.style.bottom="0px";
+
+
+
+    gameContainer.appendChild(top);
+
+    gameContainer.appendChild(bottom);
+
+
+    obstacles.push(top);
+
+    obstacles.push(bottom);
 
 }
 
 
-button:hover {
 
-    transform:scale(1.1);
+// 장애물 반복
+
+function createObstacleLoop(){
+
+
+    if(!running)return;
+
+
+    createObstacle();
+
+
+    score++;
+
+    scoreText.innerText=score;
+
+
+
+    if(score%15===0){
+
+        speed+=0.3;
+
+    }
+
+
+    setTimeout(createObstacleLoop,2000);
 
 }
+
+
+
+
+// 장애물 이동
+
+function moveObstacles(){
+
+
+    obstacles.forEach(function(obstacle,index){
+
+
+        let right =
+        parseInt(obstacle.style.right || -80);
+
+
+
+        right += speed;
+
+
+        obstacle.style.right=right+"px";
+
+
+
+        if(right>450){
+
+            obstacle.remove();
+
+            obstacles.splice(index,1);
+
+            return;
+
+        }
+
+
+        checkCollision(obstacle);
+
+
+    });
+
+}
+
+
+
+
+// 충돌
+
+function checkCollision(obstacle){
+
+
+    let p = player.getBoundingClientRect();
+
+    let o = obstacle.getBoundingClientRect();
+
+
+
+    if(
+
+        p.left < o.right &&
+        p.right > o.left &&
+        p.top < o.bottom &&
+        p.bottom > o.top
+
+    ){
+
+        endGame();
+
+    }
+
+}
+
+
+
+
+// 게임 종료
+
+function endGame(){
+
+
+    running=false;
+
+
+    finalScore.innerText=score;
+
+
+    if(score>bestScore){
+
+        bestScore=score;
+
+        localStorage.setItem(
+            "skyBest",
+            bestScore
+        );
+
+        bestText.innerText=bestScore;
+
+    }
+
+
+    gameOverScreen.style.display="flex";
+
+}
+
+
+};
