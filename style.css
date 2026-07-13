@@ -7,12 +7,11 @@
 
 body{
 
+    width:100vw;
     height:100vh;
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
 
     background:#111;
@@ -26,28 +25,38 @@ body{
 
 
 
-#gameContainer{
+/* 게임 화면 */
+
+#game{
 
 
-    width:400px;
+    width:500px;
 
-    height:700px;
+    height:800px;
 
 
     position:relative;
 
+
     overflow:hidden;
+
 
 
     background:
 
     linear-gradient(
-        #63d8ff,
-        #2477e8
+
+    #65d8ff 0%,
+
+    #4ca8ff 45%,
+
+    #8ed6ff 100%
+
     );
 
 
-    border:4px solid white;
+
+    border:3px solid white;
 
 
 }
@@ -57,9 +66,10 @@ body{
 
 
 
-/* 하늘 효과 */
 
-#gameContainer::before{
+/* 구름 효과 */
+
+#game::before{
 
 
 content:"";
@@ -67,7 +77,8 @@ content:"";
 
 position:absolute;
 
-width:100%;
+
+width:200%;
 
 height:100%;
 
@@ -75,16 +86,47 @@ height:100%;
 background:
 
 radial-gradient(
+
 circle,
-rgba(255,255,255,.8) 0 30px,
-transparent 31px
+
+rgba(255,255,255,.8) 0 35px,
+
+transparent 36px
+
 );
 
 
-background-size:180px 150px;
+
+background-size:220px 180px;
+
+
+animation:cloudMove 30s linear infinite;
 
 
 opacity:.35;
+
+
+
+}
+
+
+
+
+@keyframes cloudMove{
+
+
+from{
+
+transform:translateX(0);
+
+}
+
+
+to{
+
+transform:translateX(-300px);
+
+}
 
 
 }
@@ -93,10 +135,13 @@ opacity:.35;
 
 
 
-/* 점수 */
 
-#scoreBox,
-#bestBox{
+
+
+
+/* UI */
+
+#ui{
 
 
 position:absolute;
@@ -105,43 +150,92 @@ position:absolute;
 top:15px;
 
 
+left:15px;
+
+
+right:15px;
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
 color:white;
 
 
-font-size:22px;
+font-size:20px;
 
 
 font-weight:bold;
 
 
-z-index:50;
+z-index:100;
+
+
+text-shadow:
+
+0 2px 5px #333;
 
 
 }
 
 
 
-#scoreBox{
 
-left:15px;
+
+
+
+
+/* 바람 */
+
+#windWarning{
+
+
+position:absolute;
+
+
+top:80px;
+
+
+width:100%;
+
+
+text-align:center;
+
+
+font-size:30px;
+
+
+font-weight:bold;
+
+
+color:white;
+
+
+display:none;
+
+
+z-index:120;
+
+
+text-shadow:
+
+0 0 15px blue;
+
 
 }
 
 
 
-#bestBox{
-
-right:15px;
-
-}
 
 
 
 
 
 
-
-/* 새 전체 */
+/* 새 */
 
 #bird{
 
@@ -149,19 +243,20 @@ right:15px;
 position:absolute;
 
 
-width:50px;
+width:32px;
 
 
-height:50px;
+height:32px;
 
 
-left:80px;
+left:100px;
 
 
-top:300px;
+top:350px;
 
 
-z-index:30;
+z-index:50;
+
 
 
 }
@@ -170,24 +265,36 @@ z-index:30;
 
 
 
-/* 새 몸통 */
-
-#birdBody{
+#body{
 
 
-position:absolute;
+width:32px;
 
 
-width:45px;
+height:32px;
 
 
-height:45px;
+background:
 
 
-background:#ffd93d;
+linear-gradient(
+
+135deg,
+
+#ffe66d,
+
+#ffb703
+
+);
+
 
 
 border-radius:50%;
+
+
+box-shadow:
+
+0 3px 8px rgba(0,0,0,.3);
 
 
 }
@@ -198,16 +305,17 @@ border-radius:50%;
 
 /* 눈 */
 
+
 #eye{
 
 
 position:absolute;
 
 
-width:10px;
+width:7px;
 
 
-height:10px;
+height:7px;
 
 
 background:black;
@@ -216,16 +324,44 @@ background:black;
 border-radius:50%;
 
 
-right:12px;
+right:7px;
 
 
-top:12px;
+top:7px;
 
-
-z-index:3;
 
 
 }
+
+
+
+#shine{
+
+
+position:absolute;
+
+
+width:3px;
+
+
+height:3px;
+
+
+background:white;
+
+
+border-radius:50%;
+
+
+right:8px;
+
+
+top:8px;
+
+
+}
+
+
 
 
 
@@ -238,26 +374,30 @@ z-index:3;
 position:absolute;
 
 
-right:-15px;
+right:-10px;
 
 
-top:18px;
+top:13px;
 
 
 width:0;
 
+
 height:0;
 
 
-border-top:8px solid transparent;
-
-border-bottom:8px solid transparent;
+border-top:5px solid transparent;
 
 
-border-left:18px solid orange;
+border-bottom:5px solid transparent;
+
+
+border-left:10px solid orange;
+
 
 
 }
+
 
 
 
@@ -273,35 +413,33 @@ border-left:18px solid orange;
 position:absolute;
 
 
+width:18px;
+
+
+height:10px;
+
+
 left:-5px;
 
 
-top:22px;
+top:15px;
 
 
-width:28px;
-
-
-height:18px;
-
-
-background:#f2b632;
+background:#f4c542;
 
 
 border-radius:50%;
 
 
-transform:rotate(-30deg);
-
-
-animation:wing 0.25s infinite alternate;
+animation:flap .25s infinite alternate;
 
 
 }
 
 
 
-@keyframes wing{
+
+@keyframes flap{
 
 
 from{
@@ -313,7 +451,7 @@ transform:rotate(-30deg);
 
 to{
 
-transform:rotate(20deg);
+transform:rotate(25deg);
 
 }
 
@@ -327,8 +465,7 @@ transform:rotate(20deg);
 
 
 
-
-/* 장애물 */
+/* 일반 장애물 */
 
 
 .pipe{
@@ -337,7 +474,7 @@ transform:rotate(20deg);
 position:absolute;
 
 
-width:75px;
+width:45px;
 
 
 background:
@@ -347,25 +484,27 @@ linear-gradient(
 
 90deg,
 
-#126b25,
+#146b2c,
 
-#39d353,
+#43e05b,
 
-#126b25
+#146b2c
 
 );
 
 
-border:4px solid #084d18;
+
+border:2px solid #075018;
 
 
-z-index:20;
+
+z-index:40;
 
 
 box-shadow:
 
+inset 5px 0 8px rgba(0,0,0,.35);
 
-inset 8px 0 10px rgba(0,0,0,.3);
 
 
 }
@@ -374,7 +513,57 @@ inset 8px 0 10px rgba(0,0,0,.3);
 
 
 
-/* 시작 / 종료 화면 */
+
+
+/* 회전 장애물 */
+
+
+.rotatePipe{
+
+
+position:absolute;
+
+
+width:100px;
+
+
+height:18px;
+
+
+background:
+
+linear-gradient(
+
+90deg,
+
+#ff5500,
+
+#ffd000,
+
+#ff5500
+
+);
+
+
+
+border:2px solid #b00000;
+
+
+z-index:45;
+
+
+transform-origin:center;
+
+
+}
+
+
+
+
+
+
+
+/* 시작 / 종료 */
 
 
 #startScreen,
@@ -390,7 +579,10 @@ width:100%;
 height:100%;
 
 
-background:rgba(0,0,0,.45);
+background:
+
+rgba(0,0,0,.45);
+
 
 
 display:flex;
@@ -405,24 +597,32 @@ justify-content:center;
 align-items:center;
 
 
+
 gap:25px;
+
 
 
 color:white;
 
 
-z-index:100;
+
+z-index:200;
+
 
 
 }
+
 
 
 
 #gameOverScreen{
 
+
 display:none;
 
+
 }
+
 
 
 
@@ -431,21 +631,24 @@ display:none;
 h1{
 
 
-font-size:45px;
-
-
-text-align:center;
+font-size:50px;
 
 
 }
 
 
 
-
 button{
 
 
-padding:15px 40px;
+padding:15px 45px;
+
+
+border:none;
+
+
+border-radius:20px;
+
 
 
 font-size:22px;
@@ -454,17 +657,11 @@ font-size:22px;
 font-weight:bold;
 
 
-border:none;
-
-
-border-radius:15px;
-
 
 cursor:pointer;
 
 
 }
-
 
 
 button:hover{
