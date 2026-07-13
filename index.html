@@ -4,6 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Sky Hopper</title>
@@ -16,24 +17,26 @@
 <body>
 
 
-<div id="game">
+<div id="gameContainer">
 
 
     <!-- 점수 -->
 
-    <div id="ui">
+    <div id="scoreBox">
 
-        <div>
-            SCORE :
-            <span id="score">0</span>
-        </div>
-
-        <div>
-            BEST :
-            <span id="best">0</span>
-        </div>
+        SCORE :
+        <span id="score">0</span>
 
     </div>
+
+
+    <div id="bestBox">
+
+        BEST :
+        <span id="best">0</span>
+
+    </div>
+
 
 
 
@@ -41,40 +44,61 @@
 
     <div id="bird">
 
-        <div id="wing"></div>
+
+        <div id="birdBody"></div>
 
         <div id="eye"></div>
 
         <div id="beak"></div>
 
+        <div id="wing"></div>
+
+
     </div>
+
+
+
+
+
+    <!-- 장애물 생성 영역 -->
+
+
+
 
 
 
     <!-- 시작 화면 -->
 
+
     <div id="startScreen">
+
 
         <h1>
             SKY HOPPER
         </h1>
 
+
         <p>
-            터치 또는 SPACE로 날아오르기
+            SPACE 또는 클릭으로 점프
         </p>
 
 
-        <button id="startBtn">
+        <button id="startButton">
             START
         </button>
+
 
     </div>
 
 
 
+
+
+
     <!-- 게임 종료 -->
 
-    <div id="overScreen">
+
+    <div id="gameOverScreen">
 
 
         <h1>
@@ -83,15 +107,20 @@
 
 
         <p>
+
             SCORE :
-            <span id="result">
-            0
+            <span id="finalScore">
+                0
             </span>
+
         </p>
 
 
-        <button id="restartBtn">
+
+        <button id="restartButton">
+
             RESTART
+
         </button>
 
 
@@ -99,7 +128,9 @@
 
 
 
+
 </div>
+
 
 
 
