@@ -324,12 +324,12 @@ speed=5;
 
 if(level===3)
 
-speed=6;
+speed=5.5;
 
 
 if(level===4)
 
-speed=7;
+speed=6;
 
 
 
@@ -494,17 +494,17 @@ gap=180;
 
 else if(level===2)
 
-gap=150;
+gap=160;
 
 
 else if(level===3)
 
-gap=120;
+gap=145;
 
 
 else
 
-gap=100;
+gap=130;
 
 
 
